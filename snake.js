@@ -15,10 +15,8 @@ var snakeBody = []
 var foodX
 var foodY
 
-let count = 0
-let countEl = document.getElementById("count-el")
-
 var gameOver = false
+var gameOver2 = document.getElementById("verloren")
 
 window.onload = function() {
     board = document.getElementById("board")
@@ -28,7 +26,7 @@ window.onload = function() {
 
     placeFood()
     document.addEventListener("keyup", changeDirection)
-    setInterval(update, 1000/10)
+    setInterval(update, 1000/9)
 }
 
 function update() {
@@ -45,8 +43,6 @@ function update() {
     if (snakeX == foodX && snakeY == foodY) {
         snakeBody.push([foodX, foodY])
         placeFood()
-        count += + 1
-        countEl.innerText = count
     }
 
     for (let i = snakeBody.length-1; i > 0; i--) {
@@ -64,14 +60,22 @@ function update() {
         context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize)
     }
 
-    if (snakeX < 0 || snakeX > cols*blockSize || snakeY < 0 || snakeY > rows*blockSize) {
-        gameOver = true
-    }
-
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             gameOver = true;
+            verloren.style.display = "block"
         }
+        else {
+            verloren.style.display = "none"
+        }
+    }
+    
+    if (snakeX <= 0 || snakeX >= cols*blockSize || snakeY <= 0 || snakeY >= rows*blockSize) {
+        gameOver = true
+        verloren.style.display = "block"
+    }
+    else {
+        verloren.style.display = "none"
     }
 }
 
